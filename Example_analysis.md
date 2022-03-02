@@ -1,5 +1,5 @@
 # Introduction to Symbiosis Evolution Group bioinformating pipeline
-Here, we are going to use dozen of libraries from our Greenland project to guide you through our boinformatin pipelines. 
+Here, we are going to use dozen of libraries from our Greenland project to guide you through our boinformatic pipelines. 
 
 ##Before we start let's get familiar with basic commands!
 - pwd --- where are you? (prints the PATH to your current position).
