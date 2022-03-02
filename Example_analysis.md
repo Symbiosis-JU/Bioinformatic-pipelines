@@ -1,36 +1,63 @@
-# Introduction to Symbiosis Evolution Group bioinformating pipeline
-Here, we are going to use dozen of libraries from our Greenland project to guide you through our boinformatic pipelines. 
+# Introduction to Symbiosis Evolution Group bioinformatics pipeline for amplicon sequencing data analysis
+We hope that this script will help you navigate through the analyzes of an example amplicon dataset - a dozen of libraries from our Greenland project.
 
-##Before we start let's get familiar with basic commands!
-- pwd --- where are you? (prints the PATH to your current position).
-- ls --- listing directory contents.
-- cd --- changing directories:
-  - cd .. --- will move you one level up in your directories tree 
-  - cd --- typing just 'cd' will move you to your home directory
-- cp --- copying file, need to be followed by item you want to copy and a path to the directory:
-  - cp -r ---copy recursively, the whole directory/file structure.
-- screen --- very usefull tool that 'can be used to multiplexes a physical console between several processes'
-(in simple words you want to use it and be sure that your proccess will not be disturbed by electricity cutoff ;) ):
-  - screen -S 'name_of_your_session' --- will create a new session.
-  - screen -r 'name_of_your_session' --- will re-attach you to your session.
-  - screen - ls --- will list all the session.
-  - ctr + a + d --- will detach (but not kill) you from a session .
-- mkdir --- making directories.
-- mv --- move, need to be followed by item you want to move and a path to the directory.
-- rm --- delete
-- gunzip --- will gunzipp your file (.fastq.gz ---> .fastq)
-
-**Lets use some of those beautifull commends in action!**
+## Contents ---
+1. Some basic Linux commands.
+2. Accessing example data
+3. Workflow overview
 
 
-## Copying example data to your folder.
-First log in to your account on one of our cluster.
-Next copy our sample data to the directory of your choosing (in this case to your home directory):
+
+##1. Before we start let's get familiar with some Linux commands!
+- `pwd` --- where are you? (prints the PATH to your current position).
+- `ls` --- listing directory contents.
+  - `ls -l` --- lists directory contents while displaying their characteristics  
+- `cd` --- changing directories:
+  - `cd Workshop` --- change working directory to the directory "Workshop" that is in the current directory
+  - `cd ..` --- will move you one level up in your directories tree 
+  - `cd` --- by default, typing just 'cd' will take you to your home directory
+- `cp` --- copying file, need to be followed by item you want to copy and a path to the directory:
+  - `cp /path/to/file.txt .` --- copies a remote "file.txt" to your current working directory, symbolized by a dot (".")
+  - `cp Sequences.fasta Workshop/` --- copies a file "Sequences.fasta" from the current working directory to subdirectory "Workshop"
+  - `cp -r /path/to/directory ~` --- copy recursively the whole directory/file structure from a remote location to your home directory ("~")
+- `mkdir` --- make new directory
+  - `mkdir MyNewDirectory` --- will create a directory with the requested name
+- `mv` --- move, need to be followed by the name of the item you want to move and a path to the destination directory. Can also be used to rename items.
+  - `mv file.txt Workshop/` --- will move a file to the "Workshop" subdirectory
+  - `mv OldName.txt NewName.txt` --- will rename your text document
+- `rm` --- delete item
+  - `rm FileNotNeededAnymore.txt`
+  - `rm *.fasta` --- will remove all files with extension "fasta". Asterisk ("*") 
+
+### ...and some additional Linux tools! 
+- `screen` --- very usefull tool that 'can be used to multiplexes a physical console between several processes' by creating virtual sessions that you can connect to or disconnect from, as desired. Generally, you want to run your proccesses within a screen to ensure processes are not disrupted by network connection issues! ):
+  - `screen -S MyNewSession` --- will create a new session with the requested name. Make it informative!
+  - `screen -r MyRunningSession` --- will re-attach you to your session.
+  - `screen -ls` --- will list all the session.
+  - `ctr + a + d` --- will detach you from a session, without killing it
+- `htop` --- starts a 
+- `gunzip` --- will uncompress your gzip-compressed files (.fastq.gz ---> .fastq)
+
+**Lets use some of those beautiful commends in action!**
+
+
+
+##2. Copying example data to your folder.
+- First, log in to your account on *azor* cluster.
+- Then, copy the prepared sample data to the directory of your choosing (we recommend using your home directory):
 ```
 cp -r /mnt/matrix/symbio/workshop_march_2022 ~/
 ```
-Now you have folder "workshop_march_2022" containing R1.fastq and R2.fastq for each sample.
-**Those are gunzipped files, remember that when you obtaine your files from sequencing facility they will be with extension .fastq.gz**
+- Now you have folder "workshop_march_2022" containing R1.fastq and R2.fastq files for each sample.
+**Those are uncompressed files, remember that when you obtaine your files from sequencing facility they will be with compressed using gzip (extension: ".fastq.gz") and will need to be decompressed prior to use!
+- Go to the copied directory, display the contents:
+```
+cd ~/workshop_march_2022
+ls
+ls -l
+```
+
+
 
 ## Running splitting (MultiPISS) script.
 
