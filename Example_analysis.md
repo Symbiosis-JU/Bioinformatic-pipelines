@@ -63,7 +63,7 @@ ls -l
 ```
 
 ## 3. Amplicon data analysis overview
-![alt text](https://github.com/Symbiosis-JU/Bioinformatic-pipelines/blob/main/pipeline.jpg?raw=true)
+![alt text](https://github.com/Symbiosis-JU/Bioinformatic-pipelines/blob/main/Pipeline.png?raw=true)
 ### MultiSPLIT:
 - Splits reads of marker genes into seperate subdirectories,
 - Passes only reads with tags expected for a given sample.
