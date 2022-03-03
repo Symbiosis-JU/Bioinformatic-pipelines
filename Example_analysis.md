@@ -8,7 +8,7 @@ We hope that this script will help you navigate through the analyzes of an examp
 
 
 
-##1. Before we start let's get familiar with some Linux commands!
+## 1. Before we start let's get familiar with some Linux commands!
 - `pwd` --- where are you? (prints the PATH to your current position).
 - `ls` --- listing directory contents.
   - `ls -l` --- lists directory contents while displaying their characteristics  
@@ -38,11 +38,13 @@ We hope that this script will help you navigate through the analyzes of an examp
 - `htop` --- starts a 
 - `gunzip` --- will uncompress your gzip-compressed files (.fastq.gz ---> .fastq)
 
+**There are many more useful commands and tools - you do want to learn them!**
+
 **Lets use some of those beautiful commends in action!**
 
 
 
-##2. Copying example data to your folder.
+## 2. Copying example data to your folder.
 - First, log in to your account on *azor* cluster.
 - Then, copy the prepared sample data to the directory of your choosing (we recommend using your home directory):
 ```
@@ -57,11 +59,14 @@ ls
 ls -l
 ```
 
+## 3. Amplicon data analysis overview
+**Bullet points on what happens at each stage?**
+**Illustration?**
 
 
-## Running splitting (MultiPISS) script.
+## 4. MultiPISS - splitting libraries into datasets corresponding to different target regions
 
-First we want to split our libraries into bins representing our target genes and from each library delete sequences with tags uncharacteristic to its well.
+First, we want to split data for each of the libraries into bins representing our target genes, and from each library, delete reads with tags other than those expected for a given sample.
 To do that we are going to use our [MultiPISS.py](https://github.com/Symbiosis-JU/Bioinformatic-pipelines/blob/main/multiPISS.py) script:
 1. Click into link above and copy it (by clicking the icon 'copy raw contents' in the right upper corner of the box).
 2. use command:
@@ -72,8 +77,7 @@ This will create an empty file named MultiPISS.py. Paste the script and exit fil
 **Now you can run script!**
 Type ```./MultiPISS.py``` (```./``` --- indicates that this file is in the current directory).
 
-Oh no! You got an ERROR!:
-
+Oh no! You've got an ERROR!:
 
 ```
 ERROR! CHECK YOUR INPUT PARAMETERS!
@@ -94,7 +98,7 @@ If you claim 1 but the last two characters are not numbers, it may create an err
 As you can see, we need to provide some input parameters for our script.
 
 #### Sample_list:
-To create a sample_list in a manner that script requires, just type following command in the directory with your R1 and R2 files:
+You can make it in Excel or using other tools. Or run the following command in the directory with your R1 and R2 files:
 ```
 for file in *_R1.fastq; do
     SampleName=`basename $file _R1.fastq `
@@ -102,7 +106,7 @@ for file in *_R1.fastq; do
     echo $SampleNameMod "$SampleName"_R1.fastq "$SampleName"_R2.fastq >> sample_list.txt
 done
 ```
-**Now we are ready to run this script for real!**
+**Now we are ready to run the MultiPISS script for real!**
 Use following command:
 ```
 ./MultiPISS.py sample_list.txt ~/workshop_march_2022 ~/workshop_march_2022/splitted 0 20
@@ -177,7 +181,7 @@ OR
 You can use it as an imput for [MAO.py](https://github.com/Symbiosis-JU/Bioinformatic-pipelines/blob/main/MAO.py) script!
 
 ## MAO script
-This script is simple, but briliant at the same time.
+This script is simple, but brilliant at the same time.
 It uses ```zotu_table_expanded.txt``` of COI data as an in input and produces:
 - barcode.txt that contains info about most abundand COI barcode, taxonomy and bacteria presence
 - barcode.fasta, containing most abundand Eucaryotic COI barcode per each library/sample
