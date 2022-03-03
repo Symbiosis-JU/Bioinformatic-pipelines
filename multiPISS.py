@@ -9,8 +9,7 @@ verifying variable-length inserts preceding primers in order to control and remo
 Usage:   multiPISS.py <sample_list> <path_to_directory_with_fastqs> <path_to_output_directory> <mode_no> <number_of_threads> 
 E.g.,  ./multiPISS.py ~/workshop_march_2022/sample_list.txt ~/workshop_march_2022/ ~/workshop_march_2022/SPLIT 1 16
 
-Parameters:
-Please provide:
+Parameters - please provide:
 1) <sample_list> - A sample list with information about library name and input R1 and R2 fastq file names, tab-separated:
        Sample_name Sample_name_R1.fastq	Sample_name_R2.fastq
    Note that any fastq.gz files need to be un-gzipped before being used by this script!!!
