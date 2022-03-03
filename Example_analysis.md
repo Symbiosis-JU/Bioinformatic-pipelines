@@ -283,7 +283,14 @@ cp ~/workshop_march_2022/split/COI_trimmed/LSD.py ~/workshop_march_2022/split/V4
 ```
 **Remember that when you copy executable script, you don't need to make it executable again**
 
-To run this script you need:
+Now, run LSD for you 16S V4:
+```
+./LSD.py sample_list_V4.txt ~/workshop_march_2022/split/V4_trimmed 16SV4
+```
+
+OK, we have all inputs to run **QUACK**
+
+To run Quack you need:
 - zotu table produced by LSD (zotu_table_expanded.txt),
 - otus.tax, also produced by LSD,
 - list of blanks --- tab separated text file with names of blank (negative control) libraries with description (PCR/Extraction_blank). 
