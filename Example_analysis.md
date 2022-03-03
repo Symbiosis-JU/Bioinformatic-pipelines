@@ -235,7 +235,7 @@ screen -S LSD
 ```
 and then:
 ```
-./LSD.py sample_list_COI.txt ~/workshop_march_2022/splitted/COI_trimmed COI
+./LSD.py sample_list_COI.txt ~/workshop_march_2022/split/COI_trimmed COI
 ```
 Now you have **A LOT** of files. But for now the most important for you is:
 ```
