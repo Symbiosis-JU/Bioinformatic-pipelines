@@ -2,11 +2,13 @@
 # Introduction to Symbiosis Evolution Group bioinformatics pipeline for amplicon sequencing data analysis
 We hope that this script will help you navigate through the analyzes of an example amplicon dataset - a dozen of libraries from our Greenland project.
 
-## Contents ---
+## Contents - what we will cover here ---
 1. Some basic Linux commands.
 2. Accessing example data
 3. Workflow overview
-
+4. Data splitting into bins corresponding to different targets: MultiPISS script
+5. The core amplicon analysis workflow: LSD script
+6. Mitochondrial data analysis: MAO script
 
 
 ## 1. Before we start let's get familiar with some Linux commands!
@@ -165,10 +167,34 @@ Now you can see that you have four new subdirectories: **COI_trimmed  incorrect_
 - V12_trimmed --- containes bacterial 16S V1-V2 reads with trimmed primers sequences,
 - V4_trimmed --- containes bacterial 16S V4 reads with trimmed primers sequences,
 - incorrect_untrimmed --- with sequences that were unrecognize by the script with primers still attached.
+Let's now look at the contents of these folders:
 
-**Lets start with COI analysis!**
+```
+ls -l COI_trimmed/
+```
 
-## LSD script
+Let's look at an example file. Command `head` displays the top lines, that should give us a sense of the contents. Do you remember the fastq format?
+
+```
+head -12 COI_trimmed/GRE1805_F_COI.fastq
+```
+
+You may want to check the numbers of reads that were classified to each category.
+We can do this by counting how many times the conserved first portion of the read name
+("A00187") appears in each of the pre-split and post-split files. The numbers should agree!
+
+```
+cd ~/workshop_march_2022
+grep -c "@A00187" GRE1805_R1.fastq
+grep -c "@A00187" SPLIT/*/GRE1805_F*     ### ...where "SPLIT" is the name of your post-splitting data folder
+```
+
+**Let's proceed with COI data analysis!**
+
+
+
+## 5. LSD script
+This is the core amplicon analysis workflow. 
 This script joins F and R (R1 and R2) reads, passing only high-quality ones. 
 Next it converts fastq to fasta file, dereplicate and denoise sequences in each library seperately.
 Joins all the libraries into one table and assigns all the sequences to taxonomy.
