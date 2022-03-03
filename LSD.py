@@ -3,13 +3,18 @@
 import sys, os, re
 if len(sys.argv) != 4:
     sys.exit("""ERROR! CHECK YOUR INPUT PARAMETERS!
-Please provide:
-1) sample list with information about your libraries created in following manner:
+This scripts runs the basic data analysis pipeline for a set of amplicon libraries pre-divided into different targets. It relies on the following software:
+Pear (https://cme.h-its.org/exelixis/web/software/pear/), vsearch (https://github.com/torognes/vsearch), usearch (https://www.drive5.com/usearch/), and custom steps.
+Usage:   LSD.py <sample_list> <path_to_directory_with_fastq> <data_type> 
+E.g.,  ./LSD.py ~/workshop_march_2022/sample_list.txt ~/workshop_march_2022/split/16SV4 16SV4
+
+Parameters - please provide:
+1) <sample_list> sample list with information about your libraries created in following manner:
 Sample_name Sample_name_R1.fastq Sample_name_R2.fastq
 Please remember to first un-gzip your .gz files!!!
-2) path to the directory with R1 and R2 fiels for all the amplicon libraries that you want to analyse e.g.:
+2) <path_to_directory_with_fastq> path to the directory with R1 and R2 files for all the amplicon libraries that you want to analyse, e.g.:
 /home/Data/For/Nature/Publication/)
-3) type of data, please indicate if you are going to analyse 16SV4, 16SV1-V2 (Bacterial) or COI.""")
+3) <data_type> - the type of target data. Currently, the 16SV4, 16SV1-V2 (Bacterial) or COI.""")
 Script, sample_list, path_to_your_raw_data, type_of_data = sys.argv
 
 
