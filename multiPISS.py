@@ -18,7 +18,8 @@ Parameters - please provide:
 3) <path_to_output_directory> FULL path to the output directory. Make sure to specify an output directory name that does not yet exist!
 4) <mode_number> Information whether the last two characters of your sample name indicate well number: 1=True, 0=False
 If you claim 1 but the last two characters are not numbers, it may create an error!
-5) <number_of_threads> - Number of threads to be used by the script"""
+5) <number_of_threads> - Number of threads to be used by the script""")
+		 
 Script, sample_list, path_to_your_raw_data, output_path, well_info, core_no = sys.argv
 
 
