@@ -61,7 +61,42 @@ ls -l
 ```
 
 ## 3. Amplicon data analysis overview
-**Bullet points on what happens at each stage?**
+![alt text](https://github.com/Symbiosis-JU/Bioinformatic-pipelines/blob/main/pipeline.jpg?raw=true)
+### MultiSPLIT:
+- Splits reads of marker genes into seperate subdirectories,
+- Passes only reads with tags expected for a given sample.
+
+### LSD (used for both COI and 16S data):
+- Analyses each library (sample) separately,
+- Merges R1 and R2 reads, passes only high-quality reads,
+- Converts fastq to fasta files,
+- Dereplicates and denoises samples,
+- Assigns taxonomy affiliation to reads,
+- Produces zOTU/OTU tables used by other scripts.
+
+### MAO:
+- Uses COI zotu table (produced by LSD) as an input,
+- creates:
+  - table with info about most abundand COI barcode, taxonomy and bacteria presence,
+  - fasta file, containing most abundand Eucaryotic COI barcode per each library/sample,
+  - table containing information about Eucaryotic COI sequences that represents at least 5% of total Eucaryotic reads per sample,
+  - table containing information about bacterial COI sequences.
+
+### QUACK:
+- Uses as an input:
+  - 16S zotu table (produced by LSD),
+  - otus.tax (produced by LSD),
+  - list of blanks,
+  - list of spikeins,
+- Decontaminates 16S data based on negative controls,
+- Creates:
+  - Table with zotus assigned as: symbiont or contaminants,
+  - Decontaminated zotu and otu tables,
+  - Statistics table.
+
+
+
+
 **Illustration?**
 =======
 
@@ -112,13 +147,13 @@ done
 **Now we are ready to run the MultiPISS script for real!**
 Use following command:
 ```
-./MultiPISS.py sample_list.txt ~/workshop_march_2022 ~/workshop_march_2022/splitted 0 20
+./MultiPISS.py sample_list.txt ~/workshop_march_2022 ~/workshop_march_2022/split 0 20
 ```
-This command will run our script using created sample_list, output it without visualization in the 'splitted' subdirectory using 20 cores.
+This command will run our script using created sample_list, output it without visualization in the 'split' subdirectory using 20 cores.
 
 Type: 
 ```
-cd ~/workshop_march_2022/splitted
+cd ~/workshop_march_2022/split
 ```
 and then:
 ```
@@ -141,7 +176,7 @@ Joins all the libraries into one table and assigns all the sequences to taxonomy
 
 Again, go to our repository and copy [LSD.py](https://github.com/Symbiosis-JU/Bioinformatic-pipelines/blob/main/LSD.py).
 Copy it.
-Use ```nano LSD.py``` to create an empty file in the directory tou have your marker gene reads (for COI: ~/workshop_march_2022/splitted/COI_trimmed).
+Use ```nano LSD.py``` to create an empty file in the directory tou have your marker gene reads (for COI: ~/workshop_march_2022/split/COI_trimmed).
 Close it with saving changes and make this file executable with ```chmod +x LSD.py```.
 
 Again if you will type just ```./LSD.py``` you will get an error about putting some parameters. In this case:
