@@ -259,3 +259,112 @@ It uses ```zotu_table_expanded.txt``` of COI data as an in input and produces:
 Just do our trick with creating an ampty file with ```nano MAO.py```, paste the script and close the file with saving.
 Make script executable with ```chmod +x MAO.py``` and run it with ```./MAO.py zotu_table_expanded.txt```.
 
+## QUACK script
+This script is used for decontamination of 16S data.
+**Be aware that we are working with insects. If you are working with a different data type, consider applying some changes to fit your needs.**
+For example, this script deletes all reads characterized as chloroplasts by default, so if you are working with lichens, that may cause a lot of damage (happened before).
+
+**Before running this script you need to run LSD for you 16S data (eg. V4)**
+Go to the directory with V4 reads:
+```
+cd ~/workshop_march_2022/split/V4_trimmed
+```
+Create a **sample_list** in similar manner as with COI data:
+```
+for file in *_F_COI.fastq; do
+    SampleName=`basename $file _F_V4.fastq `
+    SampleNameMod=$(echo "$SampleName" | sed 's/-/_/g' | sed 's/_S[0-9]\+$//g')
+    echo $SampleNameMod "$SampleName"_F_COI.fastq "$SampleName"_R_V4.fastq >> sample_list_V4.txt
+done
+```
+You can copy the LSD script used for COI data, as it is the same for 16S:
+```
+cp ~/workshop_march_2022/split/COI_trimmed/LSD.py ~/workshop_march_2022/split/V4_trimmed
+```
+**Remember that when you copy executable script, you don't need to make it executable again**
+
+To run this script you need:
+- zotu table produced by LSD (zotu_table_expanded.txt),
+- otus.tax, also produced by LSD,
+- list of blanks --- tab separated text file with names of blank (negative control) libraries with description (PCR/Extraction_blank). 
+In our case whole file looks like this:
+```
+GRE0619_Neg_extr  blank_extr
+GRE0643_Neg_extr	blank_extr
+GRE0667_Neg_extr	blank_extr
+GRE0692_Neg_PCR blank_PCR
+GRE1092_Neg_PCR blank_PCR
+```
+- list of spikeins used --- tab separated text file with names of used spikeins with description (PCR/Extraction_spikein).
+In our case:
+```
+Ec5502	Extr_Spikein
+Ec5001	PCR_Spikein
+```
+- ThresholdA --- a unique genotype will be assigned as a contaminant UNLESS the maximum relative abundance it attains in at least one experimental library is more than ThresholdA * of the maximum relative abundance it attains in any blank library. Recommended value: 10
+- ThresholdB --- a unique genotype assigned previously as a symbiont will be assigned as "Other" UNLESS the maximum relative abundance it attains in at least one experimental library is more than ThresholdB. Recommended value: 0.001
+- ThresholdC --- a library will be deleted UNLESS the % of contamination will be lower than ThresholdC. Recommended value: 30
+
+OK, everything checked? Let's run this baby!:
+```
+./LSD.py zotu_table_expanded blank_list.txt spikein.txt otus.tax 10 0.001 30
+```
+If everything went well, script should print to a screen following message:
+```
+				---------- WELCOME TO QUACK (Beta_version): ----
+
+					Q -Quantification 
+
+					U - Utility 
+
+					A - And 
+
+					C - Contamination 
+
+					K - Killer 
+
+				-------------------------------------------------
+
+Opening OTU table..................... OK!
+Opening List of blanks..................... OK!
+Blank list proceeded succesfully,
+I am going to use 2 of PCR blanks:
+GRE0692_Neg_PCR, GRE1092_Neg_PCR, 
+
+I am going to use 3 of Extraction blanks:
+GRE0619_Neg_extr, GRE0643_Neg_extr, GRE0667_Neg_extr, 
+Opening List of Spikeins..................... OK!
+
+Spikein list proceeded succesfully!
+I am going to use following as PCR spikein:  Ec5001
+I am going to use following as Extraction spikein:  Ec5502
+Searching for Non-bacteria taxa..................... 
+Chimeras, Eukaryota, Chloroplast, Mitochondria and Archea reads has been recognized!
+Saving Table with classes....................... OK!
+Saving Table with statistics....................... OK!
+Saving Decontaminated zOTU Table....................... OK!
+Adding sequences...................... OK!
+Saving Decontaminated OTU Table....................... OK!
+
+DONE! May QUACK bring you luck!
+         ,-.
+       ,--' ~.).
+     ,'         `.
+    ; (((__   __)))
+    ;  ( (#) ( (#)
+    |   \_/___\_/|
+   ,"  ,-'    `__".
+  (   ( ._   ____`.)--._        _
+   `._ `-.`-' \(`-'  _  `-. _,-' `-/`.
+    ,')   `.`._))  ,' `.   `.  ,','  ;
+  .'  .     `--'  /     ).   `.      ;
+ ;     `-        /     '  )         ;
+ \                       ')       ,'
+  \                     ,'       ;
+   \               `~~~'       ,'
+    `.                      _,'
+      `.                ,--'
+        `-._________,--') 
+```
+
+   
