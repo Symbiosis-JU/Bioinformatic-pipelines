@@ -44,7 +44,6 @@ We hope that this script will help you navigate through the analyzes of an examp
 **Lets use some of those beautiful commends in action!**
 
 
-
 ## 2. Copying example data to your folder.
 - First, log in to your account on *azor* cluster.
 - Then, copy the prepared sample data to the directory of your choosing (we recommend using your home directory):
@@ -65,19 +64,6 @@ ls -l
 **Bullet points on what happens at each stage?**
 **Illustration?**
 =======
-# Introduction to Symbiosis Evolution Group bioinformating pipeline
-Here, we are going to use dozen of libraries from our Greenland project to guide you through our boinformatic pipelines. 
-
-
-## Copying example data to your folder.
-First, log in to your account on one of our cluster.
-Next, copy our sample data to the directory of your choosing (in this case to your home directory):
-```
-cp -r /mnt/matrix/symbio/workshop_march_2022 ~/
-```
-Now you have folder "workshop_march_2022" containing R1.fastq and R2.fastq files for each of the samples.
-**Those are gunzipped files, remember that when you obtaine your files from sequencing facility they will be with extension .fastq.gz**
-
 
 ## 4. MultiPISS - splitting libraries into datasets corresponding to different target regions
 
