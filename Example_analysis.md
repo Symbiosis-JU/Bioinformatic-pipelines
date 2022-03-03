@@ -1,26 +1,72 @@
+
+# Introduction to Symbiosis Evolution Group bioinformatics pipeline for amplicon sequencing data analysis
+We hope that this script will help you navigate through the analyzes of an example amplicon dataset - a dozen of libraries from our Greenland project.
+
+## Contents ---
+1. Some basic Linux commands.
+2. Accessing example data
+3. Workflow overview
+
+
+
+## 1. Before we start let's get familiar with some Linux commands!
+- `pwd` --- where are you? (prints the PATH to your current position).
+- `ls` --- listing directory contents.
+  - `ls -l` --- lists directory contents while displaying their characteristics  
+- `cd` --- changing directories:
+  - `cd Workshop` --- change working directory to the directory "Workshop" that is in the current directory
+  - `cd ..` --- will move you one level up in your directories tree 
+  - `cd` --- by default, typing just 'cd' will take you to your home directory
+- `cp` --- copying file, need to be followed by item you want to copy and a path to the directory:
+  - `cp /path/to/file.txt .` --- copies a remote "file.txt" to your current working directory, symbolized by a dot (".")
+  - `cp Sequences.fasta Workshop/` --- copies a file "Sequences.fasta" from the current working directory to subdirectory "Workshop"
+  - `cp -r /path/to/directory ~` --- copy recursively the whole directory/file structure from a remote location to your home directory ("~")
+- `mkdir` --- make new directory
+  - `mkdir MyNewDirectory` --- will create a directory with the requested name
+- `mv` --- move, need to be followed by the name of the item you want to move and a path to the destination directory. Can also be used to rename items.
+  - `mv file.txt Workshop/` --- will move a file to the "Workshop" subdirectory
+  - `mv OldName.txt NewName.txt` --- will rename your text document
+- `rm` --- delete item
+  - `rm FileNotNeededAnymore.txt`
+  - `rm *.fasta` --- will remove all files with extension "fasta". Asterisk ("*") 
+
+### ...and some additional Linux tools! 
+- `screen` --- very usefull tool that 'can be used to multiplexes a physical console between several processes' by creating virtual sessions that you can connect to or disconnect from, as desired. Generally, you want to run your proccesses within a screen to ensure processes are not disrupted by network connection issues! ):
+  - `screen -S MyNewSession` --- will create a new session with the requested name. Make it informative!
+  - `screen -r MyRunningSession` --- will re-attach you to your session.
+  - `screen -ls` --- will list all the session.
+  - `ctr + a + d` --- will detach you from a session, without killing it
+- `htop` --- starts a 
+- `gunzip` --- will uncompress your gzip-compressed files (.fastq.gz ---> .fastq)
+
+**There are many more useful commands and tools - you do want to learn them!**
+
+**Lets use some of those beautiful commends in action!**
+
+
+
+## 2. Copying example data to your folder.
+- First, log in to your account on *azor* cluster.
+- Then, copy the prepared sample data to the directory of your choosing (we recommend using your home directory):
+```
+cp -r /mnt/matrix/symbio/workshop_march_2022 ~/
+```
+- Now you have folder "workshop_march_2022" containing R1.fastq and R2.fastq files for each sample.
+
+**Those are uncompressed files, remember that when you obtaine your files from sequencing facility they will be with compressed using gzip (extension: ".fastq.gz") and will need to be decompressed prior to use!
+- Go to the copied directory, display the contents:
+```
+cd ~/workshop_march_2022
+ls
+ls -l
+```
+
+## 3. Amplicon data analysis overview
+**Bullet points on what happens at each stage?**
+**Illustration?**
+=======
 # Introduction to Symbiosis Evolution Group bioinformating pipeline
 Here, we are going to use dozen of libraries from our Greenland project to guide you through our boinformatic pipelines. 
-
-## Before we start, let's get familiar with basic commands!
-- pwd --- where are you? (prints the PATH to your current position).
-- ls --- listing directory contents.
-- cd --- changing directories:
-  - cd .. --- will move you one level up in your directories tree 
-  - cd --- typing just 'cd' will move you to your home directory
-- cp --- copying file, need to be followed by item you want to copy and a path to the directory:
-  - cp -r ---copy recursively, the whole directory/file structure.
-- screen --- very usefull tool that 'can be used to multiplexes a physical console between several processes'
-(in simple words you want to use it and be sure that your proccess will not be disturbed by electricity cutoff ;) ):
-  - screen -S 'name_of_your_session' --- will create a new session.
-  - screen -r 'name_of_your_session' --- will re-attach you to your session.
-  - screen - ls --- will list all your sessions.
-  - ctr + a + d --- will detach (but not kill) you from a session .
-- mkdir --- making directories.
-- mv --- move, need to be followed by item you want to move and a path to the directory.
-- rm --- delete
-- gunzip --- will gunzipp your file (.fastq.gz ---> .fastq)
-
-**Let's use some of those beautiful commends in action!**
 
 
 ## Copying example data to your folder.
@@ -32,9 +78,10 @@ cp -r /mnt/matrix/symbio/workshop_march_2022 ~/
 Now you have folder "workshop_march_2022" containing R1.fastq and R2.fastq files for each of the samples.
 **Those are gunzipped files, remember that when you obtaine your files from sequencing facility they will be with extension .fastq.gz**
 
-## Running splitting (MultiPISS) script.
 
-First we want to split our libraries into bins representing our target genes and from each library delete sequences with tags uncharacteristic to its well.
+## 4. MultiPISS - splitting libraries into datasets corresponding to different target regions
+
+First, we want to split data for each of the libraries into bins representing our target genes, and from each library, delete reads with tags other than those expected for a given sample.
 To do that we are going to use our [MultiPISS.py](https://github.com/Symbiosis-JU/Bioinformatic-pipelines/blob/main/multiPISS.py) script:
 1. Click on the link above and copy it (by clicking the icon 'copy raw contents' in the right upper corner of the box).
 2. use command:
@@ -45,8 +92,7 @@ This will create an empty file named MultiPISS.py. Paste the script and exit fil
 **Now you can run script!**
 Type ```./MultiPISS.py``` (```./``` --- indicates that this file is in the current directory).
 
-Oh no! You got an ERROR!:
-
+Oh no! You've got an ERROR!:
 
 ```
 ERROR! CHECK YOUR INPUT PARAMETERS!
@@ -67,7 +113,9 @@ If you claim 1 but the last two characters are not numbers, it may create an err
 As you can see, we need to provide some input parameters for our script.
 
 #### Sample_list:
-To create a sample_list in a manner that script requires, type following command in the directory with your R1 and R2 files:
+
+**You can make it in Excel or using other tools. Or run the following command in the directory with your R1 and R2 files:**
+
 ```
 for file in *_R1.fastq; do
     SampleName=`basename $file _R1.fastq `
@@ -75,7 +123,7 @@ for file in *_R1.fastq; do
     echo $SampleNameMod "$SampleName"_R1.fastq "$SampleName"_R2.fastq >> sample_list.txt
 done
 ```
-**Now we are ready to run this script for real!**
+**Now we are ready to run the MultiPISS script for real!**
 Use following command:
 ```
 ./MultiPISS.py sample_list.txt ~/workshop_march_2022 ~/workshop_march_2022/splitted 0 20
@@ -154,7 +202,7 @@ OR
 You can use it as an imput for [MAO.py](https://github.com/Symbiosis-JU/Bioinformatic-pipelines/blob/main/MAO.py) script!
 
 ## MAO script
-This script is simple, but briliant at the same time.
+This script is simple, but brilliant at the same time.
 It uses ```zotu_table_expanded.txt``` of COI data as an in input and produces:
 - barcode.txt that contains info about most abundand COI barcode, taxonomy and bacteria presence
 - barcode.fasta, containing most abundand Eucaryotic COI barcode per each library/sample
