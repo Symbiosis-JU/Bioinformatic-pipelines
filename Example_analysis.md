@@ -319,7 +319,7 @@ Ec5001	PCR_Spikein
 
 OK, everything checked? Let's run this baby!:
 ```
-./LSD.py zotu_table_expanded blank_list.txt spikein.txt otus.tax 10 0.001 30
+./QUACK.py zotu_table_expanded blank_list.txt spikein.txt otus.tax 10 0.001 30
 ```
 If everything went well, script should print to a screen following message:
 ```
