@@ -137,6 +137,7 @@ As you can see, we need to provide some input parameters for our script.
 **You can make it in Excel or using other tools. Or run the following command in the directory with your R1 and R2 files:**
 
 ```
+rm sample_list.txt   #removing any potentially corrupted files that might exist already
 for file in *_R1.fastq; do
     SampleName=`basename $file _R1.fastq `
     SampleNameMod=$(echo "$SampleName" | sed 's/-/_/g' | sed 's/_S[0-9]\+$//g')
