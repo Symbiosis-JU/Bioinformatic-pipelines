@@ -186,7 +186,7 @@ We can do this by counting how many times the conserved first portion of the rea
 ```
 cd ~/workshop_march_2022
 grep -c "@A00187" GRE1805_R1.fastq
-grep -c "@A00187" SPLIT/*/GRE1805_F*     ### ...where "SPLIT" is the name of your post-splitting data folder
+grep -c "@A00187" split/*/GRE1805_F*     ### ...where "split" is the name of your post-splitting data folder
 ```
 
 **Let's proceed with COI data analysis!**
