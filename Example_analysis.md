@@ -289,17 +289,18 @@ Now, run LSD for you 16S V4:
 OK, we have all inputs to run **QUACK**
 
 To run Quack you need:
+- the actual script! Copy it from [QUACK.py](https://github.com/Symbiosis-JU/Bioinformatic-pipelines/blob/main/QUACK.py) and change permissions to make executable, as before!
 - zotu table produced by LSD (zotu_table_expanded.txt),
 - otus.tax, also produced by LSD,
 - list of blanks --- tab separated text file with names of blank (negative control) libraries with description (PCR/Extraction_blank). 
-In our case whole file looks like this:
+In our case, you may want to create a file "blank_list.txt" that looks like this:
 ```
 NegExtr_GRE0619  blank_extr
 NegExtr_GRE0643  blank_extr
 NegPCR_GRE0692  blank_PCR
 NegPCR_GRE1092	blank_PCR
 ```
-...or like this? Make sure that the file names are correct!
+...or perhaps like this? Depending on your actual sample names. Make sure that they are correct!
 ```
 GRE0619_Neg_extr  blank_extr
 GRE0643_Neg_extr	blank_extr
@@ -308,7 +309,7 @@ GRE1092_Neg_PCR blank_PCR
 ```
 
 - list of spikeins used --- tab separated text file with names of used spikeins with description (PCR/Extraction_spikein).
-In our case:
+In our case, you may want to create a file "spikeins.txt" and with the contents as below.
 ```
 Ec5502	Extr_Spikein
 Ec5001	PCR_Spikein
@@ -319,7 +320,7 @@ Ec5001	PCR_Spikein
 
 OK, everything checked? Let's run this baby!:
 ```
-./QUACK.py zotu_table_expanded blank_list.txt spikein.txt otus.tax 10 0.001 30
+./QUACK.py zotu_table_expanded.txt blank_list.txt spikein.txt otus.tax 10 0.001 30
 ```
 If everything went well, script should print to a screen following message:
 ```
