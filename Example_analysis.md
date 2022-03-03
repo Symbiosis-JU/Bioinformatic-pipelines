@@ -1,7 +1,7 @@
 # Introduction to Symbiosis Evolution Group bioinformating pipeline
 Here, we are going to use dozen of libraries from our Greenland project to guide you through our boinformatic pipelines. 
 
-## Before we start let's get familiar with basic commands!
+## Before we start, let's get familiar with basic commands!
 - pwd --- where are you? (prints the PATH to your current position).
 - ls --- listing directory contents.
 - cd --- changing directories:
@@ -13,30 +13,30 @@ Here, we are going to use dozen of libraries from our Greenland project to guide
 (in simple words you want to use it and be sure that your proccess will not be disturbed by electricity cutoff ;) ):
   - screen -S 'name_of_your_session' --- will create a new session.
   - screen -r 'name_of_your_session' --- will re-attach you to your session.
-  - screen - ls --- will list all the session.
+  - screen - ls --- will list all your sessions.
   - ctr + a + d --- will detach (but not kill) you from a session .
 - mkdir --- making directories.
 - mv --- move, need to be followed by item you want to move and a path to the directory.
 - rm --- delete
 - gunzip --- will gunzipp your file (.fastq.gz ---> .fastq)
 
-**Lets use some of those beautifull commends in action!**
+**Let's use some of those beautiful commends in action!**
 
 
 ## Copying example data to your folder.
-First log in to your account on one of our cluster.
-Next copy our sample data to the directory of your choosing (in this case to your home directory):
+First, log in to your account on one of our cluster.
+Next, copy our sample data to the directory of your choosing (in this case to your home directory):
 ```
 cp -r /mnt/matrix/symbio/workshop_march_2022 ~/
 ```
-Now you have folder "workshop_march_2022" containing R1.fastq and R2.fastq for each sample.
+Now you have folder "workshop_march_2022" containing R1.fastq and R2.fastq files for each of the samples.
 **Those are gunzipped files, remember that when you obtaine your files from sequencing facility they will be with extension .fastq.gz**
 
 ## Running splitting (MultiPISS) script.
 
 First we want to split our libraries into bins representing our target genes and from each library delete sequences with tags uncharacteristic to its well.
 To do that we are going to use our [MultiPISS.py](https://github.com/Symbiosis-JU/Bioinformatic-pipelines/blob/main/multiPISS.py) script:
-1. Click into link above and copy it (by clicking the icon 'copy raw contents' in the right upper corner of the box).
+1. Click on the link above and copy it (by clicking the icon 'copy raw contents' in the right upper corner of the box).
 2. use command:
 ``` nano MultiPISS.py```.
 This will create an empty file named MultiPISS.py. Paste the script and exit file by ctr + x with saving the changes.
@@ -67,7 +67,7 @@ If you claim 1 but the last two characters are not numbers, it may create an err
 As you can see, we need to provide some input parameters for our script.
 
 #### Sample_list:
-To create a sample_list in a manner that script requires, just type following command in the directory with your R1 and R2 files:
+To create a sample_list in a manner that script requires, type following command in the directory with your R1 and R2 files:
 ```
 for file in *_R1.fastq; do
     SampleName=`basename $file _R1.fastq `
@@ -80,11 +80,15 @@ Use following command:
 ```
 ./MultiPISS.py sample_list.txt ~/workshop_march_2022 ~/workshop_march_2022/splitted 0 20
 ```
-This command will run our script using created sample_list, output it without visualization in 'splitted' subdirectory using 20 cores.
+This command will run our script using created sample_list, output it without visualization in the 'splitted' subdirectory using 20 cores.
 
 Type: 
 ```
 cd ~/workshop_march_2022/splitted
+```
+and then:
+```
+ls
 ```
 
 Now you can see that you have four new subdirectories: **COI_trimmed  incorrect_untrimmed  V12_trimmed  V4_trimmed**
@@ -96,7 +100,7 @@ Now you can see that you have four new subdirectories: **COI_trimmed  incorrect_
 **Lets start with COI analysis!**
 
 ## LSD script
-This script joins F and R (R1 and R2) reads, passes only those of high quality. 
+This script joins F and R (R1 and R2) reads, passing only high-quality ones. 
 Next it converts fastq to fasta file, dereplicate and denoise sequences in each library seperately.
 Joins all the libraries into one table and assigns all the sequences to taxonomy.
 **This is a first step of analysis of bacterial 16S and COI data!**
