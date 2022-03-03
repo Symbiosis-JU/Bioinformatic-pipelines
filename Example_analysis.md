@@ -96,11 +96,8 @@ ls -l
   - Decontaminated zotu and otu tables,
   - Statistics table.
 
-
-
-
-**Illustration?**
-=======
+### Quantificatiom:
+For now you need to do it by yourself in excel as it is shown and explained in this [file](https://github.com/Symbiosis-JU/Bioinformatic-pipelines/blob/main/workshop_march_2022_data.xlsx)
 
 ## 4. MultiPISS - splitting libraries into datasets corresponding to different target regions
 
