@@ -4,18 +4,22 @@
 import sys, os, re, time, multiprocessing
 if len(sys.argv) != 6:
 	sys.exit("""ERROR! CHECK YOUR INPUT PARAMETERS!
+This scripts splits multi-target amplicon sequencing datasets prepared following SEG pipelines into bins corresponding to different targets, while (optionally)
+verifying variable-length inserts preceding primers in order to control and remove cross-contamination.
+Usage:   multiPISS.py <sample_list> <path_to_directory_with_fastqs> <path_to_output_directory> <mode_no> <number_of_threads> 
+E.g.,  ./multiPISS.py ~/workshop_march_2022/sample_list.txt ~/workshop_march_2022/ ~/workshop_march_2022/SPLIT 1 16
+
+Parameters:
 Please provide:
-1) sample list with information about your libraries created in following manner (tab-separated):
-Sample_name Sample_name_R1.fastq	Sample_name_R2.fastq
-Please remember to first un-gzip your .gz files!!!
-2) FULL path to the directory with R1 and R2 fiels for all the amplicon libraries that you want to analyse e.g.:
-/home/Data/For/Nature/Publication/)
-shortcuts such as "./" are unlikely to work
-3) output directory path.
-4) Information whether the last two characters of your sample name indicate well number
-1=True, 0=False
+1) <sample_list> - A sample list with information about library name and input R1 and R2 fastq file names, tab-separated:
+       Sample_name Sample_name_R1.fastq	Sample_name_R2.fastq
+   Note that any fastq.gz files need to be un-gzipped before being used by this script!!!
+2) <path_to_directory_with_fastqs> FULL path to the directory with R1 and R2 files for all the amplicon libraries that you want to analyse e.g.:
+/home/Data/For/Nature/Publication/) . Note that shortcuts such as "./" are unlikely to work!
+3) <path_to_output_directory> FULL path to the output directory. Make sure to specify an output directory name that does not yet exist!
+4) <mode_number> Information whether the last two characters of your sample name indicate well number: 1=True, 0=False
 If you claim 1 but the last two characters are not numbers, it may create an error!
-5) Number of cores to use""")
+5) <number_of_threads> - Number of threads to be used by the script"""
 Script, sample_list, path_to_your_raw_data, output_path, well_info, core_no = sys.argv
 
 
