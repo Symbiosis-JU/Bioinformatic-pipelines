@@ -200,7 +200,7 @@ Joins all the libraries into one table and assigns all the sequences to taxonomy
 
 Again, go to our repository and copy [LSD.py](https://github.com/Symbiosis-JU/Bioinformatic-pipelines/blob/main/LSD.py).
 Copy it.
-Use ```nano LSD.py``` to create an empty file in the directory tou have your marker gene reads (for COI: ~/workshop_march_2022/split/COI_trimmed).
+Use ```nano LSD.py``` to create an empty file **in the directory you have your marker gene reads** (for COI: ~/workshop_march_2022/split/COI_trimmed).
 Close it with saving changes and make this file executable with ```chmod +x LSD.py```.
 
 Again if you will type just ```./LSD.py``` you will get an error about putting some parameters. In this case:
