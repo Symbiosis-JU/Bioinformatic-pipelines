@@ -1,5 +1,0 @@
-GRE0619_Neg_extr	blank_extr
-GRE0643_Neg_extr	blank_extr
-GRE0667_Neg_extr	blank_extr
-GRE0692_Neg_PCR	blank_PCR
-GRE1092_Neg_PCR blank_PCR
