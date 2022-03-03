@@ -294,11 +294,10 @@ To run Quack you need:
 - list of blanks --- tab separated text file with names of blank (negative control) libraries with description (PCR/Extraction_blank). 
 In our case whole file looks like this:
 ```
-GRE0619_Neg_extr  blank_extr
-GRE0643_Neg_extr	blank_extr
-GRE0667_Neg_extr	blank_extr
-GRE0692_Neg_PCR blank_PCR
-GRE1092_Neg_PCR blank_PCR
+NegExtr_GRE0619  blank_extr
+NegExtr_GRE0643  blank_extr
+NegPCR_GRE0692  blank_PCR
+NegPCR_GRE1092	blank_PCR
 ```
 - list of spikeins used --- tab separated text file with names of used spikeins with description (PCR/Extraction_spikein).
 In our case:
