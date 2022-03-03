@@ -269,10 +269,10 @@ cd ~/workshop_march_2022/split/V4_trimmed
 ```
 Create a **sample_list** in similar manner as with COI data:
 ```
-for file in *_F_COI.fastq; do
+for file in *_F_V4.fastq; do
     SampleName=`basename $file _F_V4.fastq `
     SampleNameMod=$(echo "$SampleName" | sed 's/-/_/g' | sed 's/_S[0-9]\+$//g')
-    echo $SampleNameMod "$SampleName"_F_COI.fastq "$SampleName"_R_V4.fastq >> sample_list_V4.txt
+    echo $SampleNameMod "$SampleName"_F_V4.fastq "$SampleName"_R_V4.fastq >> sample_list_V4.txt
 done
 ```
 You can copy the LSD script used for COI data, as it is the same for 16S:
