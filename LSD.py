@@ -20,11 +20,11 @@ print("Joining R1 and R2 files through Pear..................... ", end="")
 for line in SAMPLE_LIST:
     LINE = line.strip().split()
     if type_of_data == "COI":
-        os.system("pear -f %s -r %s -o %s -v 15 -n 400 -m 470 -q 30 -j 55" % (LINE[1], LINE[2], LINE[0]))
+        os.system("pear -f %s -r %s -o %s -v 15 -n 400 -m 470 -q 30 -j 15" % (LINE[1], LINE[2], LINE[0]))
     elif type_of_data == "16SV4":
-        os.system("pear -f %s -r %s -o %s -v 15 -n 250 -m 400 -q 30 -j 55" % (LINE[1], LINE[2], LINE[0]))
+        os.system("pear -f %s -r %s -o %s -v 15 -n 250 -m 400 -q 30 -j 15" % (LINE[1], LINE[2], LINE[0]))
     elif type_of_data == "16SV1-V2":
-        os.system("pear -f %s -r %s -o %s -v 15 -n 250 -m 400 -q 30 -j 55" % (LINE[1], LINE[2], LINE[0]))
+        os.system("pear -f %s -r %s -o %s -v 15 -n 250 -m 400 -q 30 -j 15" % (LINE[1], LINE[2], LINE[0]))
 
 print("OK!")        
 
@@ -92,7 +92,7 @@ os.system("mkdir denoising_summary && mv *denoising.summary.txt denoising_summar
 
 os.system("""for file in *.fasta; do
     SampleName=`basename $file .zotus.fasta`
-    usearch -otutab ./raw_fasta/"$SampleName"_raw.fasta -zotus $SampleName.zotus.fasta -otutabout "$SampleName"_zotu_table.txt -threads 60
+    usearch -otutab ./raw_fasta/"$SampleName"_raw.fasta -zotus $SampleName.zotus.fasta -otutabout "$SampleName"_zotu_table.txt -threads 15
 done""")
 print("OK!")
 
@@ -196,7 +196,7 @@ print("OK!")
 
 print("OTU picking and chimeras assignment..................... ", end="")
 ###OTU picking and chimeras removal using ASV as an input:
-os.system("usearch -cluster_otus zotus.fasta -otus otus.fasta -relabel OTU -uparseout zotu_otu_relationships.txt -threads 60")
+os.system("usearch -cluster_otus zotus.fasta -otus otus.fasta -relabel OTU -uparseout zotu_otu_relationships.txt -threads 15")
 print("OK!") 
 
 ### Creating a new fasta file of zOTUs without information about the size:
