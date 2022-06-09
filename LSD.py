@@ -25,11 +25,11 @@ print("Joining R1 and R2 files through Pear..................... ", end="")
 for line in SAMPLE_LIST:
     LINE = line.strip().split()
     if type_of_data == "COI":
-        os.system("pear -f %s -r %s -o %s -v 15 -n 400 -m 470 -q 30 -j 15" % (LINE[1], LINE[2], LINE[0]))
+        os.system("pear -f %s -r %s -o %s -v 15 -n 400 -m 470 -q 30 -j 55" % (LINE[1], LINE[2], LINE[0]))
     elif type_of_data == "16SV4":
-        os.system("pear -f %s -r %s -o %s -v 15 -n 250 -m 400 -q 30 -j 15" % (LINE[1], LINE[2], LINE[0]))
+        os.system("pear -f %s -r %s -o %s -v 15 -n 250 -m 400 -q 30 -j 55" % (LINE[1], LINE[2], LINE[0]))
     elif type_of_data == "16SV1-V2":
-        os.system("pear -f %s -r %s -o %s -v 15 -n 250 -m 400 -q 30 -j 15" % (LINE[1], LINE[2], LINE[0]))
+        os.system("pear -f %s -r %s -o %s -v 15 -n 250 -m 400 -q 30 -j 55" % (LINE[1], LINE[2], LINE[0]))
 
 print("OK!")        
 
