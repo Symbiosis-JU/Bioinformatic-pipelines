@@ -97,7 +97,7 @@ os.system("mkdir denoising_summary && mv *denoising.summary.txt denoising_summar
 
 os.system("""for file in *.fasta; do
     SampleName=`basename $file .zotus.fasta`
-    usearch -otutab ./raw_fasta/"$SampleName"_raw.fasta -zotus $SampleName.zotus.fasta -otutabout "$SampleName"_zotu_table.txt -threads 15
+    usearch -otutab ./raw_fasta/"$SampleName"_raw.fasta -zotus $SampleName.zotus.fasta -otutabout "$SampleName"_zotu_table.txt -threads 50
 done""")
 print("OK!")
 
