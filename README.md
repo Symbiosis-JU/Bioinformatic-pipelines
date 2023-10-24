@@ -1,6 +1,6 @@
 
 # Introduction to Symbiosis Evolution Group bioinformatics pipeline for amplicon sequencing data analysis
-We hope that this script will help you navigate through the analyzes of an example amplicon dataset - a dozen of libraries from our Greenland project.
+We hope that this repository will help you navigate through the analyzes of an example amplicon dataset - a dozen of libraries from our Greenland project.
 
 ## Contents - what we will cover here ---
 1. Some basic Linux commands.
