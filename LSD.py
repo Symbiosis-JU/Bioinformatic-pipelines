@@ -236,7 +236,7 @@ elif type_of_data == "16SV1-V2":
     os.system("""vsearch --sintax new_zotus.fasta -db /mnt/qnap/users/symbio/software/databases/SILVA_endo_spikeins_RDP.fasta -tabbedout zotus.tax -strand both -sintax_cutoff 0.8
 vsearch --sintax otus.fasta -db /mnt/qnap/users/symbio/software/databases/SILVA_endo_spikeins_RDP.fasta -tabbedout otus.tax -strand both -sintax_cutoff 0.8""")    
 elif type_of_data == "16SV3-V4":
-    os.system("""vsearch --sintax new_zotus.fasta -db /mnt/qnap/users/symbio/software/databases/SILVA_138/SILVA_endo_spikeins_RDP.fasta -tabbedout zotus.tax -strand both -sintax_cutoff 0.8
+    os.system("""vsearch --sintax new_zotus.fasta -db /mnt/qnap/users/symbio/software/databases/SILVA_endo_spikeins_RDP.fasta -tabbedout zotus.tax -strand both -sintax_cutoff 0.8
 vsearch --sintax otus.fasta -db /mnt/qnap/users/symbio/software/databases/SILVA_endo_spikeins_RDP.fasta -tabbedout otus.tax -strand both -sintax_cutoff 0.8 --threads 60""") 
 elif type_of_data == "ITS1a":
     os.system("""vsearch --sintax new_zotus.fasta -db /mnt/qnap/users/symbio/software/databases/utax_reference_dataset_all_10.05.2021.fasta -tabbedout zotus.tax -strand both -sintax_cutoff 0.8
