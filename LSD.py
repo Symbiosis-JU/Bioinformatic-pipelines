@@ -41,7 +41,7 @@ print("Removing unassebles and discarded sequences..................... ", end="
 ### Removing unassebles and discarded sequences along with renaming assembled ones:
 os.system("rm *unassembled* *discarded*")
 os.system("rename -f 's/.assembled//' *fastq")
-os.system ("mkdir reads && mv *_R?* reads/")
+os.system ("mkdir reads && mv *_R_?* reads/")
 print("OK!")
 
 print("Fastq to Fasta formatting..................... ", end="")
