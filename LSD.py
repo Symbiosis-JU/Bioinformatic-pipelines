@@ -14,9 +14,8 @@ Sample_name Sample_name_R1.fastq Sample_name_R2.fastq
 Please remember to first un-gzip your .gz files!!!
 2) <path_to_directory_with_fastq> path to the directory with R1 and R2 files for all the amplicon libraries that you want to analyse, e.g.:
 /home/Data/For/Nature/Publication/)
-3) <data_type> - the type of target data. Currently, the 16SV4, 16SV1-V2 (Bacterial) or COI.""")
+3) <data_type> - the type of target data. Currently, the 16SV4, 16SV1-V2, 16SV3-V4 (Bacterial), ITS1a, ITS2 (fungal) or COI.""")
 Script, sample_list, path_to_your_raw_data, type_of_data = sys.argv
-
 
 SAMPLE_LIST = open(sample_list, "r")
 input = os.listdir(path_to_your_raw_data)
@@ -25,22 +24,24 @@ print("Joining R1 and R2 files through Pear..................... ", end="")
 for line in SAMPLE_LIST:
     LINE = line.strip().split()
     if type_of_data == "COI":
-        os.system("pear -f %s -r %s -o %s -v 15 -n 400 -m 470 -q 30 -j 55" % (LINE[1], LINE[2], LINE[0]))
+        os.system("pear -f %s -r %s -o %s -v 15 -n 400 -m 470 -q 30 -j 20" % (LINE[1], LINE[2], LINE[0]))
     elif type_of_data == "16SV4":
-        os.system("pear -f %s -r %s -o %s -v 15 -n 250 -m 400 -q 30 -j 55" % (LINE[1], LINE[2], LINE[0]))
+        os.system("pear -f %s -r %s -o %s -v 15 -n 250 -m 400 -q 30 -j 20" % (LINE[1], LINE[2], LINE[0]))
     elif type_of_data == "16SV1-V2":
-        os.system("pear -f %s -r %s -o %s -v 15 -n 250 -m 400 -q 30 -j 55" % (LINE[1], LINE[2], LINE[0]))
-
+        os.system("pear -f %s -r %s -o %s -v 15 -n 250 -m 400 -q 30 -j 20" % (LINE[1], LINE[2], LINE[0]))
+    elif type_of_data == "16SV3-V4":
+        os.system("pear -f %s -r %s -o %s -v 15 -n 250 -m 470 -q 30 -j 30" % (LINE[1], LINE[2], LINE[0]))
+    elif type_of_data == "ITS1a":
+        os.system("pear -f %s -r %s -o %s -v 15 -n 250 -m 400 -q 30 -j 30" % (LINE[1], LINE[2], LINE[0]))
+    elif type_of_data == "ITS2":
+        os.system("pear -f %s -r %s -o %s -v 15 -n 250 -m 400 -q 30 -j 30" % (LINE[1], LINE[2], LINE[0]))
 print("OK!")        
 
 print("Removing unassebles and discarded sequences..................... ", end="")        
 ### Removing unassebles and discarded sequences along with renaming assembled ones:
 os.system("rm *unassembled* *discarded*")
 os.system("rename -f 's/.assembled//' *fastq")
-if type_of_data == "COI":
-    os.system ("mkdir reads && mv *_?_COI.fastq reads/")
-elif type_of_data == "16SV4":
-    os.system ("mkdir reads && mv *_?_V4.fastq reads/")
+os.system ("mkdir reads && mv *_R?* reads/")
 print("OK!")
 
 print("Fastq to Fasta formatting..................... ", end="")
@@ -51,8 +52,8 @@ os.system("""for file in *.fastq; do
 done""")
 
 os.system("mkdir fastq && mv *.fastq fastq/")
-print("OK!")
-
+print("OK!")   
+  
 os.system("rename -f 's/.fasta/_raw.fasta/' *fasta ")
 
 print("Dereplicating data..................... ", end="")
@@ -91,22 +92,37 @@ elif type_of_data == "16SV1-V2":
         SampleName=`basename $file .sorted.fasta`
         usearch -unoise3 $SampleName.sorted.fasta -zotus $SampleName.zotus.fasta -tabbedout $SampleName.denoising.summary.txt -minsize 1
     done""")    
+elif type_of_data == "16SV3-V4":
+    os.system("""for file in *sorted.fasta; do
+        SampleName=`basename $file .sorted.fasta`
+        usearch -unoise3 $SampleName.sorted.fasta -zotus $SampleName.zotus.fasta -tabbedout $SampleName.denoising.summary.txt
+    done""")
+elif type_of_data == "ITS1a":
+    os.system("""for file in *sorted.fasta; do
+        SampleName=`basename $file .sorted.fasta`
+        usearch -unoise3 $SampleName.sorted.fasta -zotus $SampleName.zotus.fasta -tabbedout $SampleName.denoising.summary.txt
+    done""")
+elif type_of_data == "ITS2":
+    os.system("""for file in *sorted.fasta; do
+        SampleName=`basename $file .sorted.fasta`
+        usearch -unoise3 $SampleName.sorted.fasta -zotus $SampleName.zotus.fasta -tabbedout $SampleName.denoising.summary.txt
+    done""")
 
 os.system("mkdir sorted && mv *sorted.fasta sorted/")
 os.system("mkdir denoising_summary && mv *denoising.summary.txt denoising_summary/")
 
 os.system("""for file in *.fasta; do
     SampleName=`basename $file .zotus.fasta`
-    usearch -otutab ./raw_fasta/"$SampleName"_raw.fasta -zotus $SampleName.zotus.fasta -otutabout "$SampleName"_zotu_table.txt -threads 50
+    usearch -otutab ./raw_fasta/"$SampleName"_raw.fasta -zotus $SampleName.zotus.fasta -otutabout "$SampleName"_zotu_table.txt -threads 70
 done""")
-print("OK!")
+print("OK!") 
 
 print("Joinign data from all the libraries into one tabel..................... ", end="")
 
 ###Adding sequence to zOTU_table with add_seq_to_zotu.py:
 os.system("""for file in *.fasta; do
     SampleName=`basename $file .zotus.fasta`
-    /mnt/matrix/symbio/Informative_indexes_script/add_seq_to_zotu.py "$SampleName"_zotu_table.txt "$SampleName".zotus.fasta "$SampleName"_zotu_table_with_seq.txt
+    /mnt/qnap/users/symbio/software/Informative_indexes_script/add_seq_to_zotu.py "$SampleName"_zotu_table.txt "$SampleName".zotus.fasta "$SampleName"_zotu_table_with_seq.txt
 done""")
 
 os.system("mkdir raw_zotu && mv *_zotu_table.txt raw_zotu && mv *zotus.fasta raw_zotu")
@@ -159,7 +175,7 @@ for k1 in seq_dict.keys():
     
 ### Creating an empty list which will be our final table
 data = []
-index = 0 #index of a table in data, basically 0 will raw with the first key, 1 - with the second ect
+index = 0 #index of a table in data, basically 0 will be raw with the first key, 1 - with the second ect
 for seq in seq_dict.keys():
     data.append(["",seq, 0]) ### append  empty zotu_ID, sequence, total (which is zero at the beginning)
     for lib in libs: #For every library in our list
@@ -197,11 +213,11 @@ with open ("zotus.fasta", 'w') as fasta:
     for zotu in data:
         seq = ">" + zotu[0] + ";size=" + str(zotu[2]) + '\n' + zotu[1] + '\n'
         fasta.write(seq)
-print("OK!")
+print("OK!") 
 
 print("OTU picking and chimeras assignment..................... ", end="")
 ###OTU picking and chimeras removal using ASV as an input:
-os.system("usearch -cluster_otus zotus.fasta -otus otus.fasta -relabel OTU -uparseout zotu_otu_relationships.txt -threads 15")
+os.system("usearch -cluster_otus zotus.fasta -otus otus.fasta -relabel OTU -uparseout zotu_otu_relationships.txt -threads 60")
 print("OK!") 
 
 ### Creating a new fasta file of zOTUs without information about the size:
@@ -211,19 +227,28 @@ print("Assigning taxonomy..................... ", end="")
 ###Assigning taxonomy:
 #Please pay attention to what cutoff value you want to use!
 if type_of_data == "COI":
-    os.system("""vsearch --sintax new_zotus.fasta -db /mnt/matrix/symbio/db/MIDORI/MIDORI_with_tax_spikeins_endo_RDP.fasta -tabbedout zotus.tax -strand both -sintax_cutoff 0.8
-    vsearch --sintax otus.fasta -db /mnt/matrix/symbio/db/MIDORI/MIDORI_with_tax_spikeins_endo_RDP.fasta -tabbedout otus.tax -strand both -sintax_cutoff 0.8""")
+    os.system("""vsearch --sintax new_zotus.fasta -db /mnt/qnap/users/symbio/software/databases//MIDORI_with_tax_spikeins_endo_RDP.fasta -tabbedout zotus.tax -strand both -sintax_cutoff 0.8
+    vsearch --sintax otus.fasta -db /mnt/qnap/users/symbio/software/databases//MIDORI_with_tax_spikeins_endo_RDP.fasta -tabbedout otus.tax -strand both -sintax_cutoff 0.8""")
 elif type_of_data == "16SV4":
-    os.system("""vsearch --sintax new_zotus.fasta -db /mnt/matrix/symbio/db/SILVA_138/SILVA_endo_spikeins_RDP.fasta -tabbedout zotus.tax -strand both -sintax_cutoff 0.8
-vsearch --sintax otus.fasta -db /mnt/matrix/symbio/db/SILVA_138/SILVA_endo_spikeins_RDP.fasta -tabbedout otus.tax -strand both -sintax_cutoff 0.8""")
+    os.system("""vsearch --sintax new_zotus.fasta -db /mnt/qnap/users/symbio/software/databases/SILVA_endo_spikeins_RDP.fasta -tabbedout zotus.tax -strand both -sintax_cutoff 0.8
+vsearch --sintax otus.fasta -db /mnt/qnap/users/symbio/software/databases/SILVA_endo_spikeins_RDP.fasta -tabbedout otus.tax -strand both -sintax_cutoff 0.8""")
 elif type_of_data == "16SV1-V2":
-    os.system("""vsearch --sintax new_zotus.fasta -db /mnt/matrix/symbio/db/SILVA_138/SILVA_endo_spikeins_RDP.fasta -tabbedout zotus.tax -strand both -sintax_cutoff 0.8
-vsearch --sintax otus.fasta -db /mnt/matrix/symbio/db/SILVA_138/SILVA_endo_spikeins_RDP.fasta -tabbedout otus.tax -strand both -sintax_cutoff 0.8""")    
-    
+    os.system("""vsearch --sintax new_zotus.fasta -db /mnt/qnap/users/symbio/software/databases/SILVA_endo_spikeins_RDP.fasta -tabbedout zotus.tax -strand both -sintax_cutoff 0.8
+vsearch --sintax otus.fasta -db /mnt/qnap/users/symbio/software/databases/SILVA_endo_spikeins_RDP.fasta -tabbedout otus.tax -strand both -sintax_cutoff 0.8""")    
+elif type_of_data == "16SV3-V4":
+    os.system("""vsearch --sintax new_zotus.fasta -db /mnt/qnap/users/symbio/software/databases/SILVA_138/SILVA_endo_spikeins_RDP.fasta -tabbedout zotus.tax -strand both -sintax_cutoff 0.8
+vsearch --sintax otus.fasta -db /mnt/qnap/users/symbio/software/databases/SILVA_endo_spikeins_RDP.fasta -tabbedout otus.tax -strand both -sintax_cutoff 0.8 --threads 60""") 
+elif type_of_data == "ITS1a":
+    os.system("""vsearch --sintax new_zotus.fasta -db /mnt/qnap/users/symbio/software/databases/utax_reference_dataset_all_10.05.2021.fasta -tabbedout zotus.tax -strand both -sintax_cutoff 0.8
+vsearch --sintax otus.fasta -db /mnt/qnap/users/symbio/software/databases/utax_reference_dataset_all_10.05.2021.fasta -tabbedout otus.tax -strand both -sintax_cutoff 0.8 --threads 60""")
+elif type_of_data == "ITS2":
+    os.system("""vsearch --sintax new_zotus.fasta -db /mnt/qnap/users/symbio/software/databases/utax_reference_dataset_all_10.05.2021.fasta -tabbedout zotus.tax -strand both -sintax_cutoff 0.8
+vsearch --sintax otus.fasta -db /mnt/qnap/users/symbio/software/databases/utax_reference_dataset_all_10.05.2021.fasta -tabbedout otus.tax -strand both -sintax_cutoff 0.8 --threads 60""")
+
 ###Removing redundant info from out taxonomy files:
 os.system("""sed -i 's/[dpcofgs]\://g' zotus.tax
 sed -i 's/[dpcofgs]\://g' otus.tax""")
-print("OK!")
+print("OK!") 
 
 print("Outputting OTU and zOTU Tables..................... ", end="")
 
@@ -412,5 +437,6 @@ with open("OTU_Table.txt", "w") as bigFile:
             print(item, end='\n',file = bigFile)
 bigFile.close()
 print("OTU_Table has been created!")
+
 
 print("Symbio® Na zdrowie! Salud! Gānbēi (干杯)! Skål!")
