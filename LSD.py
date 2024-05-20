@@ -32,10 +32,10 @@ for line in SAMPLE_LIST:
     elif type_of_data == "16SV3-V4":
         os.system("pear -f %s -r %s -o %s -v 15 -n 250 -m 470 -q 30 -j 30" % (LINE[1], LINE[2], LINE[0]))
     elif type_of_data == "ITS1a":
-        os.system("pear -f %s -r %s -o %s -v 15 -n 250 -m 400 -q 30 -j 30" % (LINE[1], LINE[2], LINE[0]))
+        os.system("pear -f %s -r %s -o %s -v 15 -n 100 -m 550 -q 30 -j 70" % (LINE[1], LINE[2], LINE[0]))
     elif type_of_data == "ITS2":
-        os.system("pear -f %s -r %s -o %s -v 15 -n 250 -m 400 -q 30 -j 30" % (LINE[1], LINE[2], LINE[0]))
-print("OK!")        
+        os.system("pear -f %s -r %s -o %s -v 15 -n 100 -m 550 -q 30 -j 70" % (LINE[1], LINE[2], LINE[0]))
+print("OK!")           
 
 print("Removing unassebles and discarded sequences..................... ", end="")        
 ### Removing unassebles and discarded sequences along with renaming assembled ones:
